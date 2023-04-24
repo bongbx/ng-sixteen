@@ -1,0 +1,141 @@
+:host {
+  nz-table::ng-deep {
+    nz-table-inner-scroll.ant-table-container {
+      min-height: calc(100vh - (344px - 39px));
+    }
+
+    nz-table-title-footer.ant-table-footer {
+      background-color: var(--bs-body-bg);
+    }
+
+    .ant-table-column-title {
+      position: static;
+      z-index: auto;
+    }
+
+    .ant-table-header.nz-table-hide-scrollbar {
+      &::-webkit-scrollbar-thumb {
+        visibility: hidden;
+      }
+    }
+
+    nz-table-title-footer.ant-table-footer {
+      padding-top: 8px;
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+
+    nz-pagination {
+
+      .ant-pagination,
+      .ant-pagination-total-text {
+        line-height: 22px;
+      }
+    }
+
+    th {
+      padding-top: 8px !important;
+      padding-bottom: 8px !important;
+    }
+
+    th.ant-table-cell-ellipsis>div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th.ant-table-cell-ellipsis span.ant-table-column-title>div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ant-table-tbody>tr.ant-table-row-selected>td {
+      background: var(--ant-item-active-bg);
+      border-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .ant-table-cell-ellipsis.ant-table-cell-fix-left-last,
+    .ant-table-cell-ellipsis.ant-table-cell-fix-right-first {
+      overflow: hidden;
+    }
+
+    .ant-table-body {
+      tr {
+        td.nz-disable-td.ant-table-cell {
+          border: none;
+        }
+      }
+    }
+  }
+
+  .disabled {
+    color: var(--bs-gray-400);
+  }
+
+  button:not([disabled]) em[nzType='delete'] {
+    color: var(--bs-danger);
+  }
+
+  .hide {
+    opacity: 0;
+  }
+
+  .resize-trigger {
+    width: 1px;
+    height: 100%;
+    // margin-top: 12px;
+    background: #e8e8e8;
+  }
+
+  .nz-resizable-preview {
+    border-width: 0;
+    border-right-width: 1px;
+  }
+
+  .nz-resizable-handle-right {
+    position: absolute;
+    padding: 0 8px;
+    // Border occupied 1px but the with is 10px. Therefore, we only need 9px
+    right: -9px;
+    z-index: 1;
+  }
+
+  .text-muted {
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  .subtitle {
+    font-weight: 400;
+  }
+
+  th {
+    font-weight: 600;
+  }
+
+  #radio::before {
+    content: none !important;
+  }
+
+  .extra-actions {
+    em {
+      height: 15px;
+      font-size: 15px;
+    }
+  }
+
+  .allow-custom-style-cell {
+    background: inherit;
+  }
+
+  .required::before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+}

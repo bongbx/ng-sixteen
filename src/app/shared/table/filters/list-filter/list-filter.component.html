@@ -1,0 +1,12 @@
+<nz-radio-group *ngIf="singleSelection; else multiSelection"
+                nzName="name"
+                [(ngModel)]="options">
+  <label nz-radio
+         [nzValue]="o.value"
+         *ngFor="let o of options">{{ o.label }}</label>
+</nz-radio-group>
+
+<ng-template #multiSelection>
+  <nz-checkbox-group [(ngModel)]="options"
+                     nzName="name"></nz-checkbox-group>
+</ng-template>

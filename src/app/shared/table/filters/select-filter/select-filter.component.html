@@ -1,0 +1,11 @@
+<nz-select inputHidePlaceholder
+  nzShowSearch
+  class="w-100"
+  [(ngModel)]="value"
+  [nzPlaceHolder]="placeholder | translate"
+  (ngModelChange)="onFilterValueChange($event)">
+  <nz-option 
+    *ngFor="let option of optionList"
+    [nzLabel]="option.text | translate"
+    [nzValue]="option.value">
+  </nz-option>

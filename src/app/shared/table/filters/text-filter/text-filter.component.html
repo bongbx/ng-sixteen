@@ -1,0 +1,7 @@
+<input inputHidePlaceholder
+  type="text"
+  nz-input
+  [placeholder]="placeholder | translate"
+  [(ngModel)]="value"
+  (ngModelChange)="onFilterValueChange($event)"
+/>

@@ -1,0 +1,364 @@
+<ng-content select="[slot=top]"></ng-content>
+
+<div class="pb-2 d-flex align-items-center"
+     [class.disabled]="isBusy">
+  <span *ngIf="showSelectedTitle || showDeleteAction"
+        class="my-1 me-2">
+    <ng-container *ngIf="checkedKeys.length === 0; else deleteMessageTemplate">
+      {{
+      selectedTitle | translate
+      }}
+    </ng-container>
+    <ng-template #deleteMessageTemplate>
+      {{
+      deleteMessage | translate: { number: checkedKeys.length }
+      }}
+    </ng-template>
+  </span>
+
+  <ng-content select="[slot=actions]"></ng-content>
+
+  <button *ngIf="showDeleteAction && checkedKeys.length && showPopupDelete"
+          nz-button
+          nzDanger
+          nz-popconfirm
+          nz-tooltip
+          nzType="default"
+          nzSize="small"
+          nzPopconfirmPlacement="bottom"
+          [disabled]="disableDelete || isBusy"
+          [nzTooltipTitle]="deleteTooltip | translate"
+          [nzPopconfirmTitle]="deletePopconfirmTitle | translate"
+          [nzCancelText]="deletePopconfirmCancel | translate"
+          [nzOkText]="deletePopconfirmOK | translate"
+          (nzOnConfirm)="onRemoveSelectedIds()">
+    <span nz-icon
+          nzIconfont="icon-trash-delete-bin"
+          class="text-danger"></span>
+  </button>
+  <button *ngIf="showDeleteAction && checkedKeys.length && !showPopupDelete"
+          nz-button
+          nzDanger
+          nz-tooltip
+          nzType="default"
+          nzSize="small"
+          [disabled]="disableDelete || isBusy"
+          [nzTooltipTitle]="deleteTooltip | translate"
+          (click)="onRemoveSelectedIds()">
+    <span nz-icon
+          nzIconfont="icon-trash-delete-bin"
+          class="text-danger"></span>
+  </button>
+  <ng-content select="[slot=extract-actions]"></ng-content>
+</div>
+
+<nz-table *ngIf="records"
+          [nzSize]="tableSize"
+          [nzData]="records"
+          [nzFrontPagination]="false"
+          [nzScroll]="scrollDefinition"
+          [nzLoading]="isBusy"
+          [nzFooter]="footer"
+          [nzShowPagination]="false"
+          [nzNoResult]="noResult"
+          (nzQueryParams)="onQueryParamsChange($event)">
+
+  <thead>
+    <tr>
+      <th *ngIf="rowDetailTemplate"
+          nzWidth="32px"
+          nzLeft></th>
+      <th *ngIf="isRowSelectable && allowSelectMultipleRow; else emptyHeader"
+          [nzChecked]="allRecordsChecked"
+          [nzIndeterminate]="indeterminate"
+          [nzDisabled]="!(allowSelectAllRows && records.length)"
+          (nzCheckedChange)="onAllChecked($event)"
+          nzWidth="32px"
+          nzLeft>
+      </th>
+
+      <ng-template #emptyHeader>
+        <th *ngIf="isRowSelectable"
+            nzWidth="32px"
+            nzLeft
+            id="radio"></th>
+      </ng-template>
+
+      <!-- <ng-container *ngIf="headers$ | async as tableHeaders"> -->
+      <ng-container *ngFor="let header of headers; trackBy: headerTrackByKey">
+        <th nz-resizable
+            nzBounds="window"
+            nzPreview
+            [nzCustomFilter]="!!header.filter || header.canFilter"
+            [nzFilters]="(header.filters$ | async) || []"
+            [nzShowFilter]="header.filters$ ? !!((header.filters$ | async) || []).length : header.canFilter"
+            [nzFilterFn]="header.filterFn || false"
+            [nzColumnKey]="$any(header.columnKey || header.field)"
+            [nzSortOrder]="header.sortOrder || null"
+            [nzSortFn]="header.sortFn || null"
+            [nzShowSort]="header.sortFn"
+            [nzSortPriority]="multipleSorter"
+            [nzSortDirections]="header.sortFn ? (header.sortDirections || defaultSortDirections) : []"
+            [nzWidth]="header.width || null"
+            [nzRight]="header.position === 'right'"
+            [nzLeft]="header.position === 'left'"
+            [nzMaxWidth]="header.maxWidth ?? 500"
+            [nzMinWidth]="header.minWidth ?? 50"
+            nz-tooltip="{{ header.label | translate : header.labelParams }}"
+            [nzEllipsis]="ellipsis"
+            (nzResizeEnd)="onResize($event, header.label)">
+
+          <div >
+            {{ header.label | translate : header.labelParams }} {{ header.extraLabel$ | async }}
+          </div>
+          <div *ngIf="header.subLabel"
+               class="subtitle">{{ header.subLabel | translate }}</div>
+
+          <nz-filter-trigger *ngIf="header.canFilter || header.filter"
+                             [nzVisible]="visibilities[$any(header.field || '')]"
+                             (nzVisibleChange)="onVisibleFilterChange($event, header.field)"
+                             [nzActive]="isIconActive(header.field)"
+                             [nzDropdownMenu]="menu">
+            <span nz-icon
+                  nzType="filter"
+                  nzTheme="fill"></span>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <!-- <app-filter-layout class="ant-table-filter-dropdown"
+                                 (clearFilter)="onClearFilter(header.field!)"
+                                 (submitFilter)="onSubmitFilter(header.field!)">
+                <ng-template [ngTemplateOutlet]="filterTemplates[header.filter?.filterType || ''] || defaultFilter"
+                             [ngTemplateOutletContext]="{
+                            $implicit: header,
+                            filterType: header.filter?.filterType || '',
+                            field: $any(header.field),
+                            value: $any(queryParams?.filter?.[$any(header.field || '')]),
+                            options: header.filters || [],
+                            header: header || '',
+                            onFilterCallback: onFilterCallback
+                          }"></ng-template>
+              </app-filter-layout> -->
+            </nz-dropdown-menu>
+          </nz-filter-trigger>
+          <nz-resize-handle nzDirection="right">
+            <div class="resize-trigger"></div>
+          </nz-resize-handle>
+        </th>
+      </ng-container>
+
+      <!-- </ng-container> -->
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <ng-container *ngFor="let row of records; trackBy: recordTrackByKey;let rowIndex = index">
+      <tr >
+        <td *ngIf="rowDetailTemplate"
+            [(nzExpand)]="expandAbilities[rowIndex]"
+            nzLeft></td>
+        <ng-container *ngIf="isRowSelectable">
+          <ng-container *ngIf="allowSelectMultipleRow; else singleSelection">
+            <td [nzDisabled]="!row[idField] || disableCheckSet.has(row[idField])"
+                [nzChecked]="isChecked(row[idField])"
+                (nzCheckedChange)="onItemChecked(row[idField], $event); onRecordChecked(row, $event)"
+                nzLeft></td>
+          </ng-container>
+
+          <ng-template #singleSelection>
+            <td nzLeft
+                (click)="onItemCheckedInline(row, true)">
+              <label nz-radio></label>
+            </td>
+          </ng-template>
+        </ng-container>
+
+        <ng-container *ngFor="let header of headers; trackBy: headerTrackByKey; let cellIndex = index">
+          <td [nzRight]="header.position === 'right'"
+              appCellTooltips
+              [nzLeft]="header.position === 'left'">
+            <ng-template [ngTemplateOutlet]="cellTemplates[header.cellType || ''] || defaultCell"
+                         [ngTemplateOutletContext]="{
+                $implicit: $any(header.field && row[header.field]),
+                cellIndex: cellIndex,
+                rowIndex: rowIndex,
+                cellType: header.cellType || ''
+              }"></ng-template>
+          </td>
+        </ng-container>
+      </tr>
+      <tr *ngIf="rowDetailTemplate"
+          [nzExpand]="expandAbilities[rowIndex]">
+        <ng-template [ngTemplateOutlet]="rowDetailTemplate"
+                     [ngTemplateOutletContext]="{
+            $implicit: row,
+            row: row,
+            rowIndex: rowIndex,
+            isExpand: expandAbilities[rowIndex]
+          }"></ng-template>
+      </tr>
+    </ng-container>
+  </tbody>
+
+  <ng-template #footer>
+    <div nz-row>
+      <div *ngIf="showFooterActions"
+           nz-col
+           nzFlex="auto"
+           class="extra-actions">
+        <button nz-button
+                nzType="link"
+                nzSize="small"
+                class="ps-0"
+                (click)="onReload()">
+          <span nz-icon
+                nzType="reload"
+                nz-tooltip
+                [nzTooltipTitle]="'TABLE.REFRESH' | translate"></span>
+        </button>
+        <button nz-button
+                nz-dropdown
+                [nzDropdownMenu]="settingSize"
+                nzPlacement="topCenter"
+                nzType="link"
+                nzSize="small">
+          <span nz-icon
+                nzType="column-height"
+                [nzTooltipPlacement]="'right'"
+                nz-tooltip
+                [nzTooltipTitle]="'TABLE.SCALE' | translate"></span>
+          <nz-dropdown-menu #settingSize="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item
+                  translate
+                  (click)="onSizeChange('default')">
+                {{ 'TABLE.DENSITY.DEFAULT' }}
+              </li>
+              <li nz-menu-item
+                  translate
+                  (click)="onSizeChange('middle')">
+                {{ 'TABLE.DENSITY.MIDDLE' }}
+              </li>
+              <li nz-menu-item
+                  translate
+                  (click)="onSizeChange('small')">
+                {{ 'TABLE.DENSITY.SMALL' }}
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+        </button>
+        <button nz-button
+                nzType="link"
+                nzSize="small"
+                (click)="openSettingColumn()">
+          <span nz-icon
+                nzType="setting"
+                nz-tooltip
+                [nzTooltipTitle]="'TABLE.CONFIGURE'| translate"></span>
+        </button>
+        <!-- <button nz-button
+                nzType="link"
+                nzSize="small"
+                (click)="onDownload(records)">
+          <span nz-icon
+                nzType="download"
+                nz-tooltip
+                [nzTooltipTitle]="'TABLE.DOWNLOAD' | translate"></span>
+        </button> -->
+        <ng-content select="[slot=custom-actions]"></ng-content>
+      </div>
+      <div nz-col
+           nzFlex="auto">
+        <div class="float-right">
+          <nz-pagination *ngIf="pageInfo"
+                         nzSize="small"
+                         nzShowSizeChanger
+                         [nzShowTotal]="rangeTemplate"
+                         [nzPageIndex]="pageInfo.page"
+                         [nzPageSize]="pageInfo.pageSize"
+                         [nzTotal]="pageInfo.totalSize"
+                         (nzPageIndexChange)="onPaginationChanged($event, pageInfo.pageSize)"
+                         (nzPageSizeChange)="onPaginationChanged(pageInfo.page, $event)">
+          </nz-pagination>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</nz-table>
+
+<ng-template #defaultCell
+             let-cellValue>{{ cellValue }}</ng-template>
+<!-- 
+<ng-template appTableCell="date"
+             let-value>
+  {{ value | appDate }}
+</ng-template>
+
+<ng-template appTableCell="dateOnly"
+             let-value>
+  {{ value | appDateOnly }}
+</ng-template> -->
+
+<ng-template appTableCell="numberPrecision"
+             let-value>
+  {{ value | number: '0.0-3' }}
+</ng-template>
+
+<ng-template #defaultFilter
+             let-field="field"
+             let-value="value">
+  <app-text-filter [fieldName]="field"
+                   [value]="value"></app-text-filter>
+</ng-template>
+
+<ng-template appTableFilter="text"
+             let-field="field"
+             let-value="value">
+  <app-text-filter [fieldName]="field"
+                   [value]="value"></app-text-filter>
+</ng-template>
+<ng-template appTableFilter="select"
+             let-field="field"
+             let-value="value">
+  <app-select-filter [fieldName]="field"
+                     [value]="value"></app-select-filter>
+</ng-template>
+<ng-template appTableFilter="number"
+             let-field="field"
+             let-value="value">
+  <app-number-filter [fieldName]="field"
+                   [value]="value"></app-number-filter>
+</ng-template>
+<ng-template appTableFilter="time"
+             let-field="field"
+             let-value="value">
+  <app-time-filter [fieldName]="field"
+                   [value]="value"></app-time-filter>
+</ng-template>
+<ng-template appTableFilter="date"
+             let-field="field"
+             let-value="value">
+  <app-date-filter [fieldName]="field"
+                   [value]="value"></app-date-filter>
+</ng-template>
+
+<ng-template appTableFilter="list"
+             let-field="field"
+             let-options="options"
+             let-value="value">
+  <app-list-filter [options]="options"
+                   [fieldName]="field"
+                   [value]="value"></app-list-filter>
+</ng-template>
+
+<ng-template #noResult>
+  <nz-empty class="my-auto"
+            [nzNotFoundContent]="notFoundContent | translate"></nz-empty>
+</ng-template>
+
+<ng-template #rangeTemplate
+             let-range="range"
+             let-total>
+  {{ range[0] }}-{{ range[1] }} / {{ total }}
+</ng-template>
+
+<app-column-setting></app-column-setting>

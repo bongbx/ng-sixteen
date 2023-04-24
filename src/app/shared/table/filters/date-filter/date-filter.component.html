@@ -1,0 +1,5 @@
+<nz-date-picker timeWithoutSecond inputHidePlaceholder class="w-100"
+                [nzFormat]="formatDate"
+                [nzPlaceHolder]="placeholder | translate"
+                [(ngModel)]="value"
+                (ngModelChange)="onFilterValueChange($event)"></nz-date-picker>

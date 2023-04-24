@@ -1,0 +1,88 @@
+<nz-drawer [nzVisible]="(isShowSettingColumn$ | async)!"
+           [nzFooter]="drawFooter"
+           (nzOnClose)="onClose()"
+           (nzVisibleChange)="$event ? onOpen() : onClose()"
+           nzPlacement="bottom"
+           nzWrapClassName="table-column-setting"
+           [nzBodyStyle]="{ 'padding': '0 24px' }"
+           nzTitle="{{ 'TABLE.COLUMNS_SETTING.TITLE' | translate }}"
+           [nzHeight]="'calc(100vh - 256px)'">
+  <ng-container *nzDrawerContent>
+    <nz-table #nzTable
+              nzSize="small"
+              [nzData]="headers"
+              [nzScroll]="{ y: 'calc(100vh - 400px)' }"
+              [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th>{{ 'TABLE.COLUMNS_SETTING.ORDER' | translate }}</th>
+          <th></th>
+          <th>{{ 'TABLE.COLUMNS_SETTING.CODE' | translate }}</th>
+          <th>{{ 'TABLE.COLUMNS_SETTING.NAME' | translate }}</th>
+          <th>{{ 'TABLE.COLUMNS_SETTING.WIDTH' | translate }}</th>
+          <th>{{ 'TABLE.COLUMNS_SETTING.VISIBLE' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of headers; let i = index">
+          <td>{{ i }}</td>
+          <td>
+            <button [disabled]="i === 0 || position.includes(item.position!) || position.includes(headers[i - 1].position!)"
+                    nz-button
+                    nzSize="small"
+                    nzType="link"
+                    (click)="move(headers, i, i-1)">
+              <span nz-icon
+                  nzType="arrow-up"></span>
+            </button>
+            <button [disabled]="i === (headers.length - 1) || position.includes(item.position!)"
+                    nz-button
+                    nzSize="small"
+                    nzType="link"
+                    (click)="move(headers, i, i+1)">
+              <span nz-icon
+                  nzType="arrow-down"></span>
+            </button>
+          </td>
+          <td>{{ item.field }}</td>
+          <td>{{ item.label | translate }}</td>
+          <td>
+            <input inputHidePlaceholder nz-input
+                   [(ngModel)]="item.width">
+          </td>
+          <td>
+            <nz-switch [ngModel]="!item.isHidden"
+                       [nzDisabled]="i === 0 || position.includes(item.position!)"
+                       [nzCheckedChildren]="checkedTemplate"
+                       [nzUnCheckedChildren]="unCheckedTemplate"
+                       (ngModelChange)="item.isHidden = !$event"></nz-switch>
+            <ng-template #checkedTemplate><span nz-icon
+                 nzType="check"></span></ng-template>
+            <ng-template #unCheckedTemplate><span nz-icon
+                 nzType="close"></span></ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </ng-container>
+</nz-drawer>
+
+<ng-template #drawFooter>
+  <button nz-button
+          nzType="link"
+          (click)="resetSetting()">{{ 'TABLE.COLUMNS_SETTING.DEFAULT' | translate }}</button>
+  <nz-button-group class="float-right">
+    <button nz-button
+            nzType="default"
+            (click)="onClose()">
+      {{ 'ACTION.CANCEL' | translate }}
+    </button>
+    <button nz-button
+            nzType="primary"
+            class="ms-2"
+            (click)="onSave(headers)">
+      {{ 'ACTION.OK' | translate }}
+    </button>
+  </nz-button-group>
+</ng-template>

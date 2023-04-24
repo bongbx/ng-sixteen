@@ -1,0 +1,15 @@
+<button nz-button
+        (click)="refresh()">Reload</button>
+<form [formGroup]="formGroup">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6"
+                   nzFor="email">E-mail</nz-form-label>
+    <nz-form-control [nzSpan]="14" >
+      <input id="name"
+             type="text"
+             formControlName="name"
+             nz-input
+             [appCustomValidator]="nameRules" />
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -1,0 +1,6 @@
+<nz-time-picker timeWithoutSecond inputHidePlaceholder [(ngModel)]="value"
+                (ngModelChange)="onFilterValueChange($event)"
+                [nzFormat]="formatTime"
+                class="w-100"
+                [nzUse12Hours]="timePicker.nzFormat.includes('a')"
+                #timePicker></nz-time-picker>

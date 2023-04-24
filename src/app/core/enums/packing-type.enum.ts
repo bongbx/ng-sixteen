@@ -1,0 +1,17 @@
+export enum PackingType {
+  Ton = 'Ton',
+  CBM = 'CBM',
+  Quantity = 'Quantity',
+  co20 = 'CO20',
+  co40 = 'CO40',
+  co45 = 'CO45',
+  co20r = 'CO20R',
+  co40r = 'CO40R',
+  co45r = 'CO45R',
+  co20f = 'CO20F',
+  co40f = 'CO40F',
+  co45f = 'CO45F',
+  service = 'Service',
+  serviceCo = 'ServiceCO',
+  material = 'Material',
+}

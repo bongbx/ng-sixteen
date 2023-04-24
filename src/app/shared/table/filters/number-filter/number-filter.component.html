@@ -1,0 +1,5 @@
+<nz-input-number inputResetNumber inputHidePlaceholder class="w-100"
+                 [(ngModel)]="value"
+                 [nzPrecision]="3"
+                 (ngModelChange)="onFilterValueChange($event)"
+                 [nzPlaceHolder]="placeholder | translate"></nz-input-number>
