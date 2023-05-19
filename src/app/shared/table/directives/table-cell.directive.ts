@@ -2,7 +2,8 @@ import { Directive, Input, TemplateRef } from '@angular/core';
 import { TableCellContext } from './../models';
 
 @Directive({
-  selector: '[appTableCell]',
+    selector: '[appTableCell]',
+    standalone: true,
 })
 export class TableCellDirective<T = unknown> {
   @Input('appTableCell') type: string | undefined;

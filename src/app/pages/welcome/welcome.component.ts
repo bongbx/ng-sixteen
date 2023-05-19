@@ -1,9 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { ValidatorRulesDirective } from '../../core/directive/validation-rule.directive';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
-  selector: 'app-welcome',
-  template: `
+    selector: 'app-welcome',
+    template: `
     <div>Nz Form</div>
     <h2 style="text-align: center;">Form valid: {{ formGroup.valid }}</h2>
     <form [formGroup]="formGroup" autocomplete="false">
@@ -47,8 +52,8 @@ import { FormControl, FormGroup } from '@angular/forms';
       </nz-form-item>
     </form>
   `,
-  styles: [
-    `
+    styles: [
+        `
       .error-message {
         color: red;
         white-space: nowrap;
@@ -56,8 +61,18 @@ import { FormControl, FormGroup } from '@angular/forms';
         text-overflow: ellipsis;
       }
     `,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NzGridModule,
+        NzFormModule,
+        NzInputModule,
+        ValidatorRulesDirective,
+        NzInputNumberModule,
+    ],
 })
 export class WelcomeComponent {
   readonly nameRules = [

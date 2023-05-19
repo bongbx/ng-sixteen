@@ -2,7 +2,8 @@ import { Directive, Input, TemplateRef } from '@angular/core';
 import { TableFilterContext } from '../models';
 
 @Directive({
-  selector: '[appTableFilter]',
+    selector: '[appTableFilter]',
+    standalone: true,
 })
 export class TableFilterDirective<T = unknown, ValueType = string> {
   @Input('appTableFilter') type: string | undefined;

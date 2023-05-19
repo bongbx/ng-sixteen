@@ -7,12 +7,21 @@ import {
 import { FieldValueChangeModel } from '../../models';
 import { TableStore } from '../../table.store';
 import { AbstractTableFilterComponent } from '../abstract-table-filter.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 @Component({
-  selector: 'app-text-filter',
-  templateUrl: './text-filter.component.html',
-  styleUrls: ['./text-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-text-filter',
+    templateUrl: './text-filter.component.html',
+    styleUrls: ['./text-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NzInputModule,
+        FormsModule,
+        TranslateModule,
+    ],
 })
 export class TextFilterComponent<
   RecordType extends Record<string, any>,

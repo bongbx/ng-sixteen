@@ -1,11 +1,35 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { TableStore } from '../../table.store';
 import { TableHeader, TableHeaderConfiguration } from '../../models';
+import { TranslateModule } from '@ngx-translate/core';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { FormsModule } from '@angular/forms';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NgFor, AsyncPipe } from '@angular/common';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 @Component({
-  selector: 'app-column-setting',
-  templateUrl: './column-setting.component.html',
-  styleUrls: ['./column-setting.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-column-setting',
+    templateUrl: './column-setting.component.html',
+    styleUrls: ['./column-setting.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NzDrawerModule,
+        NzTableModule,
+        NgFor,
+        NzButtonModule,
+        NzIconModule,
+        NzInputModule,
+        FormsModule,
+        NzSwitchModule,
+        NzWaveModule,
+        AsyncPipe,
+        TranslateModule,
+    ],
 })
 export class ColumnSettingComponent<RecordType extends Record<string, any>> {
   readonly isShowSettingColumn$ = this.store.isShowSettingColumn$;

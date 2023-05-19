@@ -7,12 +7,24 @@ import {
 import { TableStore } from '../../table.store';
 import { AbstractTableFilterComponent } from '../abstract-table-filter.component';
 import { FieldValueChangeModel } from '../../models';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { FormsModule } from '@angular/forms';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-list-filter',
-  templateUrl: './list-filter.component.html',
-  styleUrls: ['./list-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-list-filter',
+    templateUrl: './list-filter.component.html',
+    styleUrls: ['./list-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgIf,
+        NzRadioModule,
+        FormsModule,
+        NgFor,
+        NzCheckboxModule,
+    ],
 })
 export class ListFilterComponent<
   RecordType extends Record<string, any>,

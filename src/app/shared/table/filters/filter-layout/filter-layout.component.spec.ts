@@ -8,8 +8,8 @@ describe('FilterLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FilterLayoutComponent ]
-    })
+    imports: [FilterLayoutComponent]
+})
     .compileComponents();
   });
 

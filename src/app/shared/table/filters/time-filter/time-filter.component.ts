@@ -10,12 +10,16 @@ import { FieldValueChangeModel } from '../../models';
 import { TableStore } from '../../table.store';
 import { AbstractTableFilterComponent } from '../abstract-table-filter.component';
 import { Time, getCountryCode, getFormatTimeByCountryCode } from 'src/app/core';
+import { FormsModule } from '@angular/forms';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
 @Component({
-  selector: 'app-time-filter',
-  templateUrl: './time-filter.component.html',
-  styleUrls: ['./time-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-time-filter',
+    templateUrl: './time-filter.component.html',
+    styleUrls: ['./time-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NzTimePickerModule, FormsModule],
 })
 export class TimeFilterComponent<RecordType extends Record<string, any>>
   extends AbstractTableFilterComponent<RecordType, Date>

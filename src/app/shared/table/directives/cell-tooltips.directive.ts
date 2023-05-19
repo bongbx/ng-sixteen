@@ -1,7 +1,8 @@
 import { AfterViewInit, Directive, ElementRef, NgZone } from '@angular/core';
 
 @Directive({
-  selector: '[appCellTooltips]',
+    selector: '[appCellTooltips]',
+    standalone: true,
 })
 export class CellTooltipsDirective implements AfterViewInit {
   constructor(

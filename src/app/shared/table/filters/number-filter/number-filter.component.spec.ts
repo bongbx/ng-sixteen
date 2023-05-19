@@ -8,8 +8,8 @@ describe('NumberFilterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NumberFilterComponent ]
-    })
+    imports: [NumberFilterComponent]
+})
     .compileComponents();
   });
 

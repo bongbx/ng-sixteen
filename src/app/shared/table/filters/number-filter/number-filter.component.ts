@@ -7,12 +7,21 @@ import {
 import { FieldValueChangeModel } from '../../models';
 import { TableStore } from '../../table.store';
 import { AbstractTableFilterComponent } from '../abstract-table-filter.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 @Component({
-  selector: 'app-number-filter',
-  templateUrl: './number-filter.component.html',
-  styleUrls: ['./number-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-number-filter',
+    templateUrl: './number-filter.component.html',
+    styleUrls: ['./number-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NzInputNumberModule,
+        FormsModule,
+        TranslateModule,
+    ],
 })
 export class NumberFilterComponent<
   RecordType extends Record<string, any>,

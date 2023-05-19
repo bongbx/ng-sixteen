@@ -7,12 +7,23 @@ import {
 import { TableStore } from '../../table.store';
 import { AbstractTableFilterComponent } from '../abstract-table-filter.component';
 import { FieldValueChangeModel } from '../../models';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
-  selector: 'app-select-filter',
-  templateUrl: './select-filter.component.html',
-  styleUrls: ['./select-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-select-filter',
+    templateUrl: './select-filter.component.html',
+    styleUrls: ['./select-filter.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NzSelectModule,
+        FormsModule,
+        NgFor,
+        TranslateModule,
+    ],
 })
 export class SelectFilterComponent<
   RecordType extends Record<string, any>,

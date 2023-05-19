@@ -19,12 +19,8 @@ import {
   ViewChildren,
 } from '@angular/core';
 import * as equal from 'fast-deep-equal';
-import { NzResizeEvent } from 'ng-zorro-antd/resizable';
-import {
-  NzTableQueryParams,
-  NzTableSize,
-  NzTableSortOrder,
-} from 'ng-zorro-antd/table';
+import { NzResizeEvent, NzResizableModule } from 'ng-zorro-antd/resizable';
+import { NzTableQueryParams, NzTableSize, NzTableSortOrder, NzTableModule } from 'ng-zorro-antd/table';
 import { Subject } from 'rxjs';
 import {
   debounceTime,
@@ -50,13 +46,68 @@ import {
   TableHeader,
 } from './models';
 import { TableStore } from './table.store';
+import { ColumnSettingComponent } from './components/column-setting/column-setting.component';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { ListFilterComponent } from './filters/list-filter/list-filter.component';
+import { DateFilterComponent } from './filters/date-filter/date-filter.component';
+import { TimeFilterComponent } from './filters/time-filter/time-filter.component';
+import { NumberFilterComponent } from './filters/number-filter/number-filter.component';
+import { SelectFilterComponent } from './filters/select-filter/select-filter.component';
+import { TableFilterDirective as TableFilterDirective_1 } from './directives/table-filter.directive';
+import { TextFilterComponent } from './filters/text-filter/text-filter.component';
+import { TableCellDirective as TableCellDirective_1 } from './directives/table-cell.directive';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { TranslateModule } from '@ngx-translate/core';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { CellTooltipsDirective } from './directives/cell-tooltips.directive';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe, DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss'],
-  providers: [TableStore],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-table',
+    templateUrl: './table.component.html',
+    styleUrls: ['./table.component.scss'],
+    providers: [TableStore],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NgIf,
+        NzButtonModule,
+        NzWaveModule,
+        NzPopconfirmModule,
+        NzToolTipModule,
+        NzIconModule,
+        NzTableModule,
+        NgFor,
+        NzResizableModule,
+        NzDropDownModule,
+        NzRadioModule,
+        CellTooltipsDirective,
+        NgTemplateOutlet,
+        NzGridModule,
+        NzMenuModule,
+        TranslateModule,
+        NzPaginationModule,
+        TableCellDirective_1,
+        TextFilterComponent,
+        TableFilterDirective_1,
+        SelectFilterComponent,
+        NumberFilterComponent,
+        TimeFilterComponent,
+        DateFilterComponent,
+        ListFilterComponent,
+        NzEmptyModule,
+        ColumnSettingComponent,
+        AsyncPipe,
+        DecimalPipe,
+    ],
 })
 export class TableComponent<RecordType extends Record<string, any>, IdType>
   implements AfterContentInit, AfterViewInit, OnInit, OnChanges, OnDestroy

@@ -15,20 +15,20 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @NgModule({
-  imports: [
-    WelcomeRoutingModule,
-    CommonModule,
-    TableModule,
-    TranslateModule,
-    ReactiveFormsModule,
-    NzFormModule,
-    NzInputModule,
-    ValidatorRulesDirective,
-    NzSelectModule,
-    NzInputNumberModule,
-    NzDatePickerModule,
-  ],
-  declarations: [WelcomeComponent],
-  exports: [WelcomeComponent],
+    imports: [
+        WelcomeRoutingModule,
+        CommonModule,
+        TableModule,
+        TranslateModule,
+        ReactiveFormsModule,
+        NzFormModule,
+        NzInputModule,
+        ValidatorRulesDirective,
+        NzSelectModule,
+        NzInputNumberModule,
+        NzDatePickerModule,
+        WelcomeComponent,
+    ],
+    exports: [WelcomeComponent],
 })
 export class WelcomeModule {}

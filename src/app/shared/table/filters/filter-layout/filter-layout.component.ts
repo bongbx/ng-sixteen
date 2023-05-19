@@ -5,12 +5,21 @@ import {
   Input,
   Output,
 } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
-  selector: 'app-filter-layout',
-  templateUrl: './filter-layout.component.html',
-  styleUrls: ['./filter-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-filter-layout',
+    templateUrl: './filter-layout.component.html',
+    styleUrls: ['./filter-layout.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        NzButtonModule,
+        NzWaveModule,
+        TranslateModule,
+    ],
 })
 export class FilterLayoutComponent {
   @Input() submitTitle = 'TABLE.FILTERS.SEARCH';
