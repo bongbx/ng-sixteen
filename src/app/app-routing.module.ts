@@ -8,6 +8,11 @@ const routes: Routes = [
     loadComponent: () =>
       import('./pages/welcome/welcome.component').then(m => m.WelcomeComponent),
   },
+  {
+    path: 'hello',
+    loadComponent: () =>
+      import('./pages/hello/hello.component').then(m => m.HelloComponent),
+  },
 ];
 
 @NgModule({
