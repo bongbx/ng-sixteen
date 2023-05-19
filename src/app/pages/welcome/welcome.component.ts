@@ -8,6 +8,17 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
     selector: 'app-welcome',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NzGridModule,
+        NzFormModule,
+        NzInputModule,
+        ValidatorRulesDirective,
+        NzInputNumberModule,
+    ],
     template: `
     <div>Nz Form</div>
     <h2 style="text-align: center;">Form valid: {{ formGroup.valid }}</h2>
@@ -61,17 +72,6 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
         text-overflow: ellipsis;
       }
     `,
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NzGridModule,
-        NzFormModule,
-        NzInputModule,
-        ValidatorRulesDirective,
-        NzInputNumberModule,
     ],
 })
 export class WelcomeComponent {
