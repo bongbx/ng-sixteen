@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* app.component.css */
+.error-messages-container {
+  margin-top: 4px;
+}
+
+.error-message {
+  color: red;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
