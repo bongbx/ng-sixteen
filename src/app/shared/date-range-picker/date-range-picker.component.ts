@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ViewEncapsulation,
   forwardRef,
@@ -7,6 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '../input/input.component';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-date-range-picker',
@@ -19,12 +21,22 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
-      useExisting: forwardRef(() => DateRangePickerComponent)
-    }
+      useExisting: forwardRef(() => DateRangePickerComponent),
+    },
   ],
   template: `
-    <input type="date" app-input />
-    <input type="date" app-input />
+    <input
+      type="date"
+      [value]="start"
+      app-input
+      (change)="startChange($event)"
+    />
+    <input
+      type="date"
+      [value]="end"
+      app-input
+      (change)="startChange($event)"
+    />
   `,
   host: {
     '[class.picker]': `true`,
@@ -52,16 +64,72 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
 })
 export class DateRangePickerComponent implements ControlValueAccessor {
+  protected onChange = (_: (Date | null)[]) => {};
+
+  protected onTouched = () => {};
+
+  value: (Date | null)[] = [];
+
+  disabled = false;
+
+  readonly dateOptions: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+
+  get start() {
+    return this.value[0] ? format(new Date(this.value[0]), 'yyyy-MM-dd') : null;
+  }
+
+  get end() {
+    return this.value[1] ? format(new Date(this.value[1]), 'yyyy-MM-dd') : null;
+  }
+
+  constructor(private readonly cd: ChangeDetectorRef) {
+
+  }
+
   writeValue([start, end]: [Date, Date]): void {
-    throw new Error('Method not implemented.');
+    if (start && end) {
+      this.value = [start, end];
+      console.log(this.value)
+      this.cd.detectChanges();
+    }
   }
-  registerOnChange(fn: any): void {
-    throw new Error('Method not implemented.');
+
+  registerOnChange(fn: (_: (Date | null)[]) => void): void {
+    this.onChange = fn;
   }
-  registerOnTouched(fn: any): void {
-    throw new Error('Method not implemented.');
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
   }
-  setDisabledState?(isDisabled: boolean): void {
-    throw new Error('Method not implemented.');
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  startChange(start: any) {
+    this.onChange([this.toDate(start.target.value), this.value[1]]);
+  }
+
+  endChange(end: any) {
+    this.onChange([this.value[0], this.toDate(end.target.value)]);
+  }
+
+  private toDate(value: string) {
+    console.log(value);
+    if(!value) {
+      return null;
+    }
+
+    const date = new Date(value);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    } as Intl.DateTimeFormatOptions;
+    return new Date(date.toLocaleDateString('en-US', options));
   }
 }
