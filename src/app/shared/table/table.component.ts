@@ -144,7 +144,7 @@ export class TableComponent<RecordType extends Record<string, any>, IdType>
       this.store.setHeaders(value || []);
     }, 10);
   }
-  @Input() records: readonly RecordType[] = [];
+  @Input({ required: true }) records: readonly RecordType[] = [];
   @Input() pageInfo!: PageInfo;
   @Input() queryParams?: QueryParamsChangedModel<RecordType>;
   @Input() isBusy: boolean | null = false;

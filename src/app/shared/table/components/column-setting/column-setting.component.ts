@@ -11,6 +11,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NgFor, AsyncPipe } from '@angular/common';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+
 @Component({
     selector: 'app-column-setting',
     templateUrl: './column-setting.component.html',
@@ -35,6 +37,12 @@ export class ColumnSettingComponent<RecordType extends Record<string, any>> {
   readonly isShowSettingColumn$ = this.store.isShowSettingColumn$;
   position: string[] = ['left', 'right'];
   headers: TableHeader<RecordType>[] = [];
+
+  readonly showSettings = toSignal(this.isShowSettingColumn$);
+
+  readonly isShowSetting = this.store.selectSignal(x => x.isShowSettingColumn);
+
+  readonly isShow$ = toObservable(this.isShowSetting);
 
   constructor(
     private readonly store: TableStore<RecordType>,

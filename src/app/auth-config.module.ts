@@ -5,13 +5,14 @@ import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
   imports: [
     AuthModule.forRoot({
       config: {
-        authority: 'https://offeringsolutions-sts.azurewebsites.net',
+        authority: 'https://smartlog-auth-be-dev.smartlogvn.com',
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
-        clientId: 'angularCodeRefreshTokens',
-        scope: 'openid profile email taler_api offline_access',
+        clientId: 'STX_App',
+        scope: 'openid profile email address phone role Auth offline_access',
         responseType: 'code',
         silentRenew: true,
+        authWellknownEndpointUrl: 'https://smartlog-auth-be-dev.smartlogvn.com/.well-known/openid-configuration',
         useRefreshToken: true,
         // triggerRefreshWhenIdTokenExpired: false,
         logLevel: LogLevel.Debug,

@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import {
+  OidcSecurityService,
+  ConfigurationService,
+} from 'angular-auth-oidc-client';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,9 +13,14 @@ export class AppComponent {
   isCollapsed = false;
   title = 'ng-16';
 
-  constructor(private readonly oidcSecurityService: OidcSecurityService) {}
+  constructor(
+    private readonly oidcSecurityService: OidcSecurityService,
+    private readonly configurationService: ConfigurationService
+  ) {}
 
   ngOnInit() {
+    this.configurationService.getOpenIDConfigurations();
+
     this.oidcSecurityService
       .checkAuth()
       .subscribe(({ isAuthenticated, userData, accessToken }) => {

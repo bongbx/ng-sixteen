@@ -29,13 +29,15 @@ import { format } from 'date-fns';
       type="date"
       [value]="start"
       app-input
+      [disabled]="disabled"
       (change)="startChange($event)"
     />
     <input
       type="date"
       [value]="end"
       app-input
-      (change)="startChange($event)"
+      [disabled]="disabled"
+      (change)="endChange($event)"
     />
   `,
   host: {
@@ -90,10 +92,14 @@ export class DateRangePickerComponent implements ControlValueAccessor {
 
   }
 
-  writeValue([start, end]: [Date, Date]): void {
+  writeValue(value: [Date, Date]): void {
+    if(!value) {
+      return;
+    }
+    const [start, end] = value;
+
     if (start && end) {
       this.value = [start, end];
-      console.log(this.value)
       this.cd.detectChanges();
     }
   }
@@ -108,6 +114,7 @@ export class DateRangePickerComponent implements ControlValueAccessor {
 
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+    this.cd.detectChanges();
   }
 
   startChange(start: any) {

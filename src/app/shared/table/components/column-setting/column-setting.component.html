@@ -1,4 +1,4 @@
-<nz-drawer [nzVisible]="(isShowSettingColumn$ | async)!"
+<nz-drawer [nzVisible]="showSettings()!"
            [nzFooter]="drawFooter"
            (nzOnClose)="onClose()"
            (nzVisibleChange)="$event ? onOpen() : onClose()"

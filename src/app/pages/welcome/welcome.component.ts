@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { ValidatorRulesDirective } from '../../core/directive/validation-rule.directive';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'app-welcome',
@@ -87,6 +88,7 @@ export class WelcomeComponent {
     (value: number) => value >= 18 || 'Age must be more than 18',
   ];
 
+
   readonly emailRules = [
     (value: string) => !!value || 'Email is required',
     (value: string) =>
@@ -95,7 +97,7 @@ export class WelcomeComponent {
   ];
 
   readonly formGroup = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
     email: new FormControl(''),
     age: new FormControl(0),
   });
