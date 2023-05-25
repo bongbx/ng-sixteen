@@ -1,26 +1,32 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { ValidatorRulesDirective } from '../../core/directive/validation-rule.directive';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzGridModule } from 'ng-zorro-antd/grid';
-import { map } from 'rxjs';
+import { map, of, startWith } from 'rxjs';
 
 @Component({
-    selector: 'app-welcome',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NzGridModule,
-        NzFormModule,
-        NzInputModule,
-        ValidatorRulesDirective,
-        NzInputNumberModule,
-    ],
-    template: `
+  selector: 'app-welcome',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NzGridModule,
+    NzFormModule,
+    NzInputModule,
+    ValidatorRulesDirective,
+    NzInputNumberModule,
+  ],
+  template: `
     <div>Nz Form</div>
     <h2 style="text-align: center;">Form valid: {{ formGroup.valid }}</h2>
     <form [formGroup]="formGroup" autocomplete="false">
@@ -64,8 +70,8 @@ import { map } from 'rxjs';
       </nz-form-item>
     </form>
   `,
-    styles: [
-        `
+  styles: [
+    `
       .error-message {
         color: red;
         white-space: nowrap;
@@ -73,13 +79,16 @@ import { map } from 'rxjs';
         text-overflow: ellipsis;
       }
     `,
-    ],
+  ],
 })
 export class WelcomeComponent {
   readonly nameRules = [
-    (value: string) => !!value || 'Name is required',
+    (value: string) => !!value || 'Email is required',
+    (value: number) => !!value || 'Name is required',
     (value: string) => value.length < 15 || 'Name maxlength is 15',
     (value: string) => value.length > 6 || 'Name minlength is 6',
+    (value: string) =>
+      this.checkExistName(value).pipe(map((e) => !e || `'${value}' is exist`)),
   ];
 
   readonly ageRules = [
@@ -87,7 +96,6 @@ export class WelcomeComponent {
     (value: number) => value < 35 || 'Age must be less than 35',
     (value: number) => value >= 18 || 'Age must be more than 18',
   ];
-
 
   readonly emailRules = [
     (value: string) => !!value || 'Email is required',
@@ -105,5 +113,9 @@ export class WelcomeComponent {
   private isValidEmail(email: string) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailPattern.test(email);
+  }
+
+  private checkExistName(name: string) {
+    return of(name.includes('Boong')).pipe(startWith(true));
   }
 }
